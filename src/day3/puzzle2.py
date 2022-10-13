@@ -24,14 +24,14 @@ def calculate_rating(digits, bit_criteria):
                   if number[bit_position] == int(bit_criteria(digits, bit_position))]
         if len(digits) == 1:
             break
-    rating = bits_to_decimal(list(digits)[0])
+    rating = bits_to_decimal(digits[0])
     return rating
 
 
 input = read_input('day3/input2.txt')
 
 num_digits = len(input[0])
-digits = list(map(lambda line: tuple(int(digit) for digit in line), input))
+digits = [tuple(int(digit) for digit in line) for line in input]
 oxygen_generator_rating = calculate_rating(digits, most_common_value)
 co2_scrubber_rating = calculate_rating(digits, least_common_value)
 
