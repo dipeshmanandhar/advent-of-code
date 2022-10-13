@@ -18,7 +18,7 @@ def move(command):
     return (horizontal_movement, depth_movement)
 
 
-input = read_input('day2/input1.txt')
+input = read_input('input.txt', 2021, 2)
 
 movements = map(move, input)
 horizontal_position, depth = (sum(i) for i in zip(*movements))

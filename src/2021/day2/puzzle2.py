@@ -36,7 +36,7 @@ def move(command, current_aim):
     return (horizontal_movement, depth_movement)
 
 
-input = read_input('day2/input2.txt')
+input = read_input('input.txt', 2021, 2)
 
 aim_changes = map(aim, input)
 cumulative_aims = cumulative_sum(aim_changes)

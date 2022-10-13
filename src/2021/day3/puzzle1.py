@@ -7,7 +7,7 @@ def bits_to_decimal(bits):
     return decimal
 
 
-input = read_input('day3/input1.txt')
+input = read_input('input.txt', 2021, 3)
 
 num_lines = len(input)
 digits = map(lambda line: (int(digit) for digit in line), input)
