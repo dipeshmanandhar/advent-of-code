@@ -28,7 +28,7 @@ def calculate_rating(digits, bit_criteria):
     return rating
 
 
-input = read_input('day3/input2.txt')
+input = read_input('input.txt', 2021, 3)
 
 num_digits = len(input[0])
 digits = [tuple(int(digit) for digit in line) for line in input]
