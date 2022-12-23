@@ -26,9 +26,9 @@ for line in input:
     grid[x+1][y+1][z+1] = True
 
 visited = [[[False] * Z_LEN for _ in range(Y_LEN)] for _ in range(X_LEN)]
-visited[-1][-1][-1] = True
+visited[0][0][0] = True
 unvisited = deque()
-unvisited.append((X_LEN-1, Y_LEN-1, Z_LEN-1))
+unvisited.append((0, 0, 0))
 surface_area = 0
 while unvisited:
     x, y, z = unvisited.popleft()
