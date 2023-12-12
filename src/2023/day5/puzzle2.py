@@ -15,18 +15,6 @@ def follow_map(src: int, map: list[tuple[int]]):
     return dest
 
 
-# assumes map is sorted by src_start
-def follow_map_reverse(src: int, map: list[tuple[int]]):
-    dest = src
-    for src_start, dest_start, range_len in map:
-        if src < src_start:
-            break
-        elif src >= src_start and src < src_start + range_len:
-            dest = src - src_start + dest_start
-            break
-    return dest
-
-
 # assumes seeds_info is sorted by start seed
 def find_seeds_in_seeds(search_seeds: tuple[int], seeds_info: list[tuple[int]]):
     search_start, search_length = search_seeds
