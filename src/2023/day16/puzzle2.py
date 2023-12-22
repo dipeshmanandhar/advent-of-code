@@ -7,6 +7,49 @@ from src.common.read_input import read_input
 class Direction(Enum):
     UP, LEFT, DOWN, RIGHT = range(4)
 
+    def flip(self):
+        if self == Direction.UP:
+            return Direction.DOWN
+        elif self == Direction.LEFT:
+            return Direction.RIGHT
+        elif self == Direction.DOWN:
+            return Direction.UP
+        else:
+            return Direction.LEFT
+
+    def next(self, tile: str):
+        if tile == "/":
+            if self == Direction.UP:
+                return (Direction.RIGHT,)
+            elif self == Direction.LEFT:
+                return (Direction.DOWN,)
+            elif self == Direction.DOWN:
+                return (Direction.LEFT,)
+            else:
+                return (Direction.UP,)
+        elif tile == "\\":
+            if self == Direction.UP:
+                return (Direction.LEFT,)
+            elif self == Direction.LEFT:
+                return (Direction.UP,)
+            elif self == Direction.DOWN:
+                return (Direction.RIGHT,)
+            else:
+                return (Direction.DOWN,)
+        elif tile == "|":
+            if self == Direction.LEFT or self == Direction.RIGHT:
+                return (Direction.UP, Direction.DOWN)
+        elif tile == "-":
+            if self == Direction.UP or self == Direction.DOWN:
+                return (Direction.LEFT, Direction.RIGHT)
+        return (self,)
+
+    def reverse(self, tile: str):
+        if tile == "/" or tile == "\\":
+            return self.next(tile)[0].flip()
+        else:
+            return self.flip()
+
 
 input = read_input("input.txt", 2023, 16)
 
@@ -36,36 +79,17 @@ def shoot_beam(
             c += 1
         if r < 0 or r >= NUM_ROWS or c < 0 or c >= NUM_COLS:
             break
-        if direction in prev_dirs[r][c]:
+        if (
+            direction in prev_dirs[r][c]
+            or direction.reverse(board[r][c]) in prev_dirs[r][c]
+        ):
             break
         else:
             prev_dirs[r][c].append(direction)
-        if board[r][c] == "/":
-            if direction == Direction.UP:
-                direction = Direction.RIGHT
-            elif direction == Direction.LEFT:
-                direction = Direction.DOWN
-            elif direction == Direction.DOWN:
-                direction = Direction.LEFT
-            else:
-                direction = Direction.UP
-        elif board[r][c] == "\\":
-            if direction == Direction.UP:
-                direction = Direction.LEFT
-            elif direction == Direction.LEFT:
-                direction = Direction.UP
-            elif direction == Direction.DOWN:
-                direction = Direction.RIGHT
-            else:
-                direction = Direction.DOWN
-        elif board[r][c] == "|":
-            if direction == Direction.LEFT or direction == Direction.RIGHT:
-                direction = Direction.DOWN
-                shoot_beam(board, prev_dirs, r, c, Direction.UP)
-        elif board[r][c] == "-":
-            if direction == Direction.UP or direction == Direction.DOWN:
-                direction = Direction.RIGHT
-                shoot_beam(board, prev_dirs, r, c, Direction.LEFT)
+        next_directions = direction.next(board[r][c])
+        direction = next_directions[0]
+        if len(next_directions) > 1:
+            shoot_beam(board, prev_dirs, r, c, next_directions[1])
 
 
 def count_energized(prev_dirs: list[list[list[Direction]]]):
